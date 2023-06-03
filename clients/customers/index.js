@@ -3,10 +3,10 @@
 const { io } = require('socket.io-client');
 const socket = io('http://localhost:3001/candy');
 const orderCreator = require('./handler');
-
+const store = 'Eva\'s Sugar & Reece\'s Pieces';
 //!! EVERYTHING STARTS HERE AT THIS INTERVAL
 setInterval(() => {
-
+ 
   orderCreator(socket);
 }, 5000);
 

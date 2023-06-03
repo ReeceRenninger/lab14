@@ -36,8 +36,8 @@ candy.on('connection', (socket) => {
   });
 
   //listening for confirmation sent from orderhandler to trigger order confirmation from VENDOR
-  socket.on('confirmation', () => {
-    socket.broadcast.emit('confirmation');
+  socket.on('confirmation', (payload) => {
+    socket.broadcast.emit('confirmation', payload);
   });
 
   // listens for and relays pickup event

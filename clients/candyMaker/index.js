@@ -9,7 +9,13 @@ socket.emit('join', store);
 socket.emit('getAll', { queueId: store });
 
 // on order creation, vendor will confirm order.
-socket.on('customerOrder', confirmOrder(socket)); 
+socket.on('customerOrder', (payload) => {
+  setTimeout(() => {
+    
+    confirmOrder(payload); 
+  }, 500);
+}); 
+  
 
 socket.on('delivered', (payload) => {
   setTimeout(() => {

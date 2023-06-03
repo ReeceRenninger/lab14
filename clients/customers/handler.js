@@ -18,10 +18,10 @@ const orderCreator = (socket, order = null) => {
     event: 'order-creation',
     messageId: order.orderId,
     queueId: store,
-    order:order,
+    order,
   };
   
-// socket.emit('confirmation', payload);
+  console.log('CUSTOMER: Order was requested');
   socket.emit('customerOrder', payload);
 };
 

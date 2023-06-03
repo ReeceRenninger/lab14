@@ -1,5 +1,8 @@
 'use strict';
 
+const { io } = require('socket.io-client');
+const socket = io('http://localhost:3001/candy');
+
 // let Chance = require('chance');
 // let chance = new Chance();
 // const store = 'Eva\'s Sugar & Reece\'s Pieces';
@@ -26,7 +29,12 @@
 // };
 
 // console.log('VENDOR: ORDER is ready for pickup:', payload);
-const confirmOrder = (payload) => console.log('VENDOR: We have received your order:', payload.order.customer);
+const confirmOrder = (payload) => {
+  console.log('VENDOR: We have received your order:', payload.order.customer);
+  socket.emit('confirmation', payload);
+  socket.emit('pickup', payload);
+};
+
 
 const thankCustomer = (payload) => console.log('VENDOR: Thank you for your Eva\'s Sugar & Reece\'s Pieces', payload.order.customer);
 
