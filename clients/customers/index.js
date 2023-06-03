@@ -7,12 +7,12 @@ const orderCreator = require('./handler');
 //!! EVERYTHING STARTS HERE AT THIS INTERVAL
 setInterval(() => {
 
-  socket.emit('order', orderCreator(socket));
+  orderCreator(socket);
 }, 5000);
 
 // customer responding to confirmation from orderHandler
-socket.on('confirmation', (store) => {
-  console.log(`CUSTOMER: Thanks for confirming from ${store}`);
+socket.on('confirmation', (payload) => {
+  console.log(`CUSTOMER: Thanks for confirming my order ${payload.order.store}`);
 });
 
 

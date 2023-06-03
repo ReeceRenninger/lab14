@@ -26,7 +26,7 @@
 // };
 
 // console.log('VENDOR: ORDER is ready for pickup:', payload);
-const confirmOrder = (payload) => console.log('VENDOR: We have received your order:', payload.order.orderId);
+const confirmOrder = (payload) => console.log('VENDOR: We have received your order:', payload.order.customer);
 
 const thankCustomer = (payload) => console.log('VENDOR: Thank you for your Eva\'s Sugar & Reece\'s Pieces', payload.order.customer);
 

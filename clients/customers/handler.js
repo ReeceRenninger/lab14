@@ -4,7 +4,6 @@ let Chance = require('chance');
 let chance = new Chance();
 const store = 'Eva\'s Sugar & Reece\'s Pieces';
 
-
 const orderCreator = (socket, order = null) => {
   if (!order) {
     order = {
@@ -16,10 +15,10 @@ const orderCreator = (socket, order = null) => {
   }
 
   let payload = {
-    event: 'pickup',
+    event: 'order-creation',
     messageId: order.orderId,
     queueId: store,
-    order,
+    order:order,
   };
   
 // socket.emit('confirmation', payload);

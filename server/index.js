@@ -24,7 +24,7 @@ candy.on('connection', (socket) => {
     console.log('ORDER: ', { event, timestamp, payload });
   });
 
-  socket.on('order', (payload) => {
+  socket.on('customerOrder', (payload) => {
     let customerQueue = candyQueue.read('customer');
     if(!customerQueue){
       let customerKey = candyQueue.store('customer', new Queue());
@@ -32,12 +32,12 @@ candy.on('connection', (socket) => {
     }
     
     customerQueue.store(payload.messageId, payload);
-    console.log('this is the customer queue', customerQueue);
-    socket.broadcast.emit('order', payload);
+    socket.broadcast.emit('customerOrder', payload);
   });
 
+  //listening for confirmation sent from orderhandler to trigger order confirmation from VENDOR
   socket.on('confirmation', () => {
-    socket.emit('confirmation');
+    socket.broadcast.emit('confirmation');
   });
 
   // listens for and relays pickup event
