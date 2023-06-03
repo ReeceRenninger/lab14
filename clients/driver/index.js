@@ -2,8 +2,9 @@
 
 const { io } = require('socket.io-client');
 const socket = io('http://localhost:3001/candy');
+const store = 'Eva\'s Sugar & Reece\'s Pieces';
 
-socket.emit('getAll', {queueId: 'driver'});
+socket.emit('getAll', { queueId: 'driver' }); //was just 'driver'
 
 const  { pickupOccurred, packageDelivered } = require('./handler');
 

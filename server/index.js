@@ -48,6 +48,7 @@ candy.on('connection', (socket) => {
       let driverKey = candyQueue.store('driver', new Queue());
       driverQueue = candyQueue.read(driverKey);
     }
+    //console.log('driver queue adding event ' , payload.event);
     driverQueue.store(payload.messageId, payload);
     // sends to all clients except vendor
     socket.broadcast.emit('pickup', payload);
@@ -58,37 +59,55 @@ candy.on('connection', (socket) => {
     socket.broadcast.emit('in-transit', payload);
   });
 
+  //DELIVERED SOCKET EVENTS
   socket.on('delivered', (payload) => {
+    let customerQueue = candyQueue.read('customer');
+    if(!customerQueue){
+      let customerKey = candyQueue.store('customer', new Queue());
+      customerQueue = candyQueue.read(customerKey);
+    }
+    console.log('customer queue adding event ' , payload.event);
+    customerQueue.store(payload.messageId, payload);
     
     let vendorQueue = candyQueue.read(payload.queueId);
     if(!vendorQueue){
       let vendorKey = candyQueue.store(payload.queueId, new Queue());
       vendorQueue = candyQueue.read(vendorKey);
     }
+    //console.log(payload.queueId, 'vendor queue adding event ' , payload.event);
     vendorQueue.store(payload.messageId, payload);
 
-    socket.to(payload.queueId).emit('delivered', payload);
+    socket.broadcast.emit('delivered', payload);
   });
 
   socket.on('getAll', (payload) => {
     console.log('attempting to get all');
+    // const queueNames = Object.keys(candyQueue.data);
+    // queueNames.forEach((queueId) => {
+    //   console.log('QUEUE', queueId);
+    // });
     let currentQueue = candyQueue.read(payload.queueId);
-    // console.log(payload.queueId, candyQueue );
+    //console.log(payload.queueId);//, currentQueue.data );
 
     if(currentQueue && currentQueue.data){
       const ids = Object.keys(currentQueue.data);
-      // console.log(ids);
+      // console.log('ids', ids);
       ids.forEach(messageId => {
         let savedPayload = currentQueue.read(messageId);
+        console.log('event', savedPayload.event);
         socket.emit(savedPayload.event, savedPayload);
       });
     }
   });
 
   socket.on('received', (payload) => {
+    //console.log(payload.queueId, 'received ', payload.messageId);
     let currentQueue = candyQueue.read(payload.queueId);
     if(!currentQueue){
       throw new Error('we have payloads, but no queue');
+    }
+    if(payload.queueId === 'customer'){
+      console.log(payload.queueId, 'deleting ', payload.messageId);
     }
     currentQueue.remove(payload.messageId);
   });
