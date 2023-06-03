@@ -20,23 +20,53 @@ candy.on('connection', (socket) => {
 
   //logger
   socket.onAny((event, payload) => {
-    let timestamp = new Date();
-    console.log('ORDER: ', { event, timestamp, payload });
+    //let timestamp = new Date();
+    // console.log('ORDER: ', { event, timestamp, payload });
   });
 
+  //CUSTOMER ORDER SOCKET EVENTS
   socket.on('customerOrder', (payload) => {
     let customerQueue = candyQueue.read('customer');
     if(!customerQueue){
       let customerKey = candyQueue.store('customer', new Queue());
       customerQueue = candyQueue.read(customerKey);
     }
-    
+    console.log('customer queue adding event ' , payload.event);
     customerQueue.store(payload.messageId, payload);
+
+    //allow customer to getAll from vendor que for confirmation msg
+    let vendorQueue = candyQueue.read(payload.queueId);
+    if(!vendorQueue){
+      let vendorKey = candyQueue.store(payload.queueId, new Queue());
+      vendorQueue = candyQueue.read(vendorKey);
+    }
+    //console.log(payload.queueId, 'vendor queue adding event ' , payload.event);
+    vendorQueue.store(payload.messageId, payload);
+
+    //allow customer to getAll from driver queue for delivery msg    
+    let driverQueue = candyQueue.read('driver');
+    if(!driverQueue){
+      let driverKey = candyQueue.store('driver', new Queue());
+      driverQueue = candyQueue.read(driverKey);
+    }
+    //console.log('driver queue adding event ' , payload.event);
+    driverQueue.store(payload.messageId, payload);
     socket.broadcast.emit('customerOrder', payload);
   });
-
+  //customer is not sending confirmation from getAll grab BUT is thanking driver....
   //listening for confirmation sent from orderhandler to trigger order confirmation from VENDOR
   socket.on('confirmation', (payload) => {
+
+    let customerQueue = candyQueue.read('customer');
+    if(!customerQueue){
+      let customerKey = candyQueue.store('customer', new Queue());
+      customerQueue = candyQueue.read(customerKey);
+    }
+    console.log('customer queue adding event ' , payload.event);
+    customerQueue.store(payload.messageId, payload);
+
+
+    
     socket.broadcast.emit('confirmation', payload);
   });
 
