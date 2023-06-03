@@ -3,12 +3,12 @@
 let Chance = require('chance');
 let chance = new Chance();
 const store = 'Eva\'s Sugar & Reece\'s Pieces';
-
+let orderId = 1;
 const orderCreator = (socket, order = null) => {
   if (!order) {
     order = {
       store,
-      orderId: chance.guid(),
+      orderId: orderId++,
       customer: chance.name(),
       address: chance.address(),
     };
@@ -21,7 +21,8 @@ const orderCreator = (socket, order = null) => {
     order,
   };
   
-  console.log('CUSTOMER: Order was requested');
+  console.log('CUSTOMER: Order was requested for', payload.order.orderId);
+  payload.event = 'customerOrder';
   socket.emit('customerOrder', payload);
 };
 

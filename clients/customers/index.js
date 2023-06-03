@@ -3,7 +3,9 @@
 const { io } = require('socket.io-client');
 const socket = io('http://localhost:3001/candy');
 const orderCreator = require('./handler');
-const store = 'Eva\'s Sugar & Reece\'s Pieces';
+// const store = 'Eva\'s Sugar & Reece\'s Pieces';
+
+socket.emit('getAll', { queueId: 'customer' });
 //!! EVERYTHING STARTS HERE AT THIS INTERVAL
 setInterval(() => {
  
@@ -12,12 +14,13 @@ setInterval(() => {
 
 // customer responding to confirmation from orderHandler
 socket.on('confirmation', (payload) => {
-  console.log(`CUSTOMER: Thanks for confirming my order ${payload.order.store}`);
+  console.log(`CUSTOMER: Thanks for confirming my order: ${payload.order.orderId}`);
 });
 
 
-socket.on('delivered', (store) => {
-  console.log(`CUSTOMER: Thanks driver! I got my order from ${store}.`);
+socket.on('delivered', (payload) => {
+  socket.emit('received', payload);
+  console.log(`CUSTOMER: Thanks driver! I got my order: ${payload.order.orderId}.`);
 });
 
 
