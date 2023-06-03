@@ -21,7 +21,7 @@ const orderCreator = (socket, order = null) => {
     order,
   };
   
-  console.log('CUSTOMER: Order was requested');
+  console.log('CUSTOMER: Order was requested:', payload.order.orderId);
   socket.emit('customerOrder', payload);
 };
 

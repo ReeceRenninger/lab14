@@ -5,7 +5,6 @@ const { Server } = require('socket.io');
 const PORT = process.env.PORT || 3001;
 const Queue = require('./lib/queue');
 const candyQueue = new Queue();
-
 const server = new Server();
 const candy = server.of('/candy');
 
@@ -25,26 +24,26 @@ candy.on('connection', (socket) => {
   });
 
   socket.on('customerOrder', (payload) => {
-    let customerQueue = candyQueue.read('customer');
-    if(!customerQueue){
-      let customerKey = candyQueue.store('customer', new Queue());
+    let customerQueue = candyQueue.read('customerOrder');
+    if (!customerQueue) {
+      let customerKey = candyQueue.store('customerOrder', new Queue());
       customerQueue = candyQueue.read(customerKey);
     }
-    
+
     customerQueue.store(payload.messageId, payload);
     socket.broadcast.emit('customerOrder', payload);
   });
 
-  //listening for confirmation sent from orderhandler to trigger order confirmation from VENDOR
+  //listening for confirmation sent from orderHandler to trigger order confirmation from VENDOR
   socket.on('confirmation', (payload) => {
     socket.broadcast.emit('confirmation', payload);
   });
 
   // listens for and relays pickup event
   socket.on('pickup', (payload) => {
-    
+
     let driverQueue = candyQueue.read('driver');
-    if(!driverQueue){
+    if (!driverQueue) {
       let driverKey = candyQueue.store('driver', new Queue());
       driverQueue = candyQueue.read(driverKey);
     }
@@ -53,21 +52,19 @@ candy.on('connection', (socket) => {
     socket.broadcast.emit('pickup', payload);
   });
 
-  
   socket.on('in-transit', (payload) => {
     socket.broadcast.emit('in-transit', payload);
   });
 
   socket.on('delivered', (payload) => {
-    
     let vendorQueue = candyQueue.read(payload.queueId);
-    if(!vendorQueue){
+    if (!vendorQueue) {
       let vendorKey = candyQueue.store(payload.queueId, new Queue());
       vendorQueue = candyQueue.read(vendorKey);
     }
     vendorQueue.store(payload.messageId, payload);
 
-    socket.to(payload.queueId).emit('delivered', payload);
+    socket.broadcast.emit('delivered', payload);
   });
 
   socket.on('getAll', (payload) => {
@@ -75,19 +72,23 @@ candy.on('connection', (socket) => {
     let currentQueue = candyQueue.read(payload.queueId);
     // console.log(payload.queueId, candyQueue );
 
-    if(currentQueue && currentQueue.data){
+    if (currentQueue && currentQueue.data) {
       const ids = Object.keys(currentQueue.data);
       // console.log(ids);
       ids.forEach(messageId => {
         let savedPayload = currentQueue.read(messageId);
-        socket.emit(savedPayload.event, savedPayload);
+        console.log('THIS IS THE saved payload', savedPayload.event);
+        socket.broadcast.emit(savedPayload.event, savedPayload);
       });
     }
+    else
+      console.log('NO queue to get all from!!!');
   });
+
 
   socket.on('received', (payload) => {
     let currentQueue = candyQueue.read(payload.queueId);
-    if(!currentQueue){
+    if (!currentQueue) {
       throw new Error('we have payloads, but no queue');
     }
     currentQueue.remove(payload.messageId);

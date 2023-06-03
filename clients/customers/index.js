@@ -3,10 +3,9 @@
 const { io } = require('socket.io-client');
 const socket = io('http://localhost:3001/candy');
 const orderCreator = require('./handler');
-const store = 'Eva\'s Sugar & Reece\'s Pieces';
+
 //!! EVERYTHING STARTS HERE AT THIS INTERVAL
 setInterval(() => {
- 
   orderCreator(socket);
 }, 5000);
 
@@ -16,8 +15,8 @@ socket.on('confirmation', (payload) => {
 });
 
 
-socket.on('delivered', (store) => {
-  console.log(`CUSTOMER: Thanks driver! I got my order from ${store}.`);
+socket.on('delivered', (payload) => {
+  console.log(`CUSTOMER: Thanks driver! I got my order from ${payload.order.store}.`);
 });
 
 

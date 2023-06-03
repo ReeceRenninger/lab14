@@ -2,12 +2,12 @@
 
 const { io } = require('socket.io-client');
 const socket = io('http://localhost:3001/candy');
+const store = 'Eva\'s Sugar & Reece\'s Pieces';
 
-socket.emit('getAll', {queueId: 'driver'});
+socket.emit('getAll', {queueId: store});
 
 const  { pickupOccurred, packageDelivered } = require('./handler');
 
-// how will we handle socket when modularized?
 socket.on('pickup', (payload) => {
   setTimeout(() => {
     pickupOccurred(payload, socket);
