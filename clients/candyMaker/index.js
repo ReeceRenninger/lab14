@@ -2,18 +2,18 @@
 
 const { io } = require('socket.io-client');
 const socket = io('http://localhost:3001/candy');
-const { orderHandler, thankDriver } = require('./handler');
-const store = '1-206-flowers';
+const { thankCustomer, confirmOrder } = require('./handler');
+const store = 'Eva\'s Sugar & Reece\'s Pieces';
 
 socket.emit('join', store);
 socket.emit('getAll', { queueId: store });
 
-socket.on('order', orderHandler(socket));
-
+// on order creation, vendor will confirm order.
+socket.on('customerOrder', confirmOrder(socket)); 
 
 socket.on('delivered', (payload) => {
   setTimeout(() => {
     socket.emit('received', payload);
-    thankDriver(payload);
+    thankCustomer(payload);
   }, 1000);
 });

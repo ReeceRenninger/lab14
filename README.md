@@ -6,7 +6,7 @@
 
 ### Problem Domain  
 
-Utilizing a socket server to create a delivery service that allows a user to connect and send order requests to different restaurants that drivers would then respond to and conduct the pickup and delivery.  Upon confirmation of delivery the vendor would send a thank you message to the customer for their order.
+Utilizing a socket server to create a delivery service that allows a customer to connect and send order requests to our candy store that drivers would then respond to and conduct the pickup and delivery.  Upon confirmation of delivery the vendor would send a thank you message to the customer for their order.
 
 Stretch Goals:
 

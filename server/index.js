@@ -24,6 +24,22 @@ candy.on('connection', (socket) => {
     console.log('ORDER: ', { event, timestamp, payload });
   });
 
+  socket.on('order', (payload) => {
+    let customerQueue = candyQueue.read('customer');
+    if(!customerQueue){
+      let customerKey = candyQueue.store('customer', new Queue());
+      customerQueue = candyQueue.read(customerKey);
+    }
+    
+    customerQueue.store(payload.messageId, payload);
+    console.log('this is the customer queue', customerQueue);
+    socket.broadcast.emit('order', payload);
+  });
+
+  socket.on('confirmation', () => {
+    socket.emit('confirmation');
+  });
+
   // listens for and relays pickup event
   socket.on('pickup', (payload) => {
     
@@ -43,7 +59,7 @@ candy.on('connection', (socket) => {
   });
 
   socket.on('delivered', (payload) => {
-    // TODO: for lab-13, need to queue "delivered" messaging to the vendor
+    
     let vendorQueue = candyQueue.read(payload.queueId);
     if(!vendorQueue){
       let vendorKey = candyQueue.store(payload.queueId, new Queue());
