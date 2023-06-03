@@ -1,41 +1,22 @@
 'use strict';
 
+// const { p } = require('chart.js/dist/chunks/helpers.core');
 const { io } = require('socket.io-client');
 const socket = io('http://localhost:3001/candy');
 
-// let Chance = require('chance');
-// let chance = new Chance();
-// const store = 'Eva\'s Sugar & Reece\'s Pieces';
 
-// const orderCreator = (socket, order = null) => {
-//   if (!order) {
-//     order = {
-//       store,
-//       orderId: chance.guid(),
-//       customer: chance.name(),
-//       address: chance.address(),
-//     };
-//   }
-
-//   let payload = {
-//     event: 'pickup',
-//     messageId: order.orderId,
-//     queueId: store,
-//     order,
-//   };
-  
-//   socket.emit('confirmation', payload);
-//   socket.emit('pickup', payload);
-// };
-
-// console.log('VENDOR: ORDER is ready for pickup:', payload);
 const confirmOrder = (payload) => {
-  console.log('VENDOR: We have received your order:', payload.order.customer);
+  console.log('VENDOR: We have received your order:', payload.order.orderId);
+  payload.event = 'confirmation';
   socket.emit('confirmation', payload);
+  payload.event = 'pickup';
   socket.emit('pickup', payload);
 };
 
 
-const thankCustomer = (payload) => console.log('VENDOR: Thank you for your Eva\'s Sugar & Reece\'s Pieces', payload.order.customer);
+const thankCustomer = (payload) => {
+  console.log('VENDOR: Thank you for your candy order', payload.order.orderId);
+  socket.emit('received', payload);
+};
 
 module.exports = { thankCustomer, confirmOrder };
