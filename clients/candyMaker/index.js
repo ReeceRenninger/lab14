@@ -10,10 +10,10 @@ socket.emit('getAll', { queueId: 'driver'}); // tried 'customer' to get all from
 
 // on order creation, vendor will confirm order.
 socket.on('customerOrder', (payload) => {
-  setTimeout(() => {
+  // setTimeout(() => {
     
     confirmOrder(payload); 
-  }, 500);
+  // }, 500);
 }); 
 
 socket.on('delivered', (payload) => {
