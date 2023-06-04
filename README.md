@@ -2,7 +2,7 @@
 
 ## Project: Candy/Food Delivery Service
 
-### Author: Eva Grace Smith and Reece Renninger
+### Author: [Eva Grace Smith](https://github.com/EvaGraceSmith) and [Reece Renninger](https://github.com/ReeceRenninger)
 
 ### Problem Domain  
 
@@ -16,11 +16,11 @@ Stretch Goals:
 ### Links and Resources
 
 - [GitHub Actions ci/cd](https://github.com/ReeceRenninger/lab14/actions/new)
-- [back-end server url](http://xyz.com) (when applicable)
+<!-- - [back-end server url](http://xyz.com) (when applicable) -->
 
 ### Collaborators
 
--
+- [Mark Smith](https://github.com/markmrsmith)
 
 ### Setup
 
@@ -46,4 +46,4 @@ npm test will run all available tests
 
 #### UML
 
-![Alt text](assets/lab14UML.png)
+![Lab 14 UML](assets/lab14UML.png)
