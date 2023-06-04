@@ -7,8 +7,9 @@ const socket = io('http://localhost:3001/candy');
 
 const confirmOrder = (payload) => {
   console.log('VENDOR: We have received your order:', payload.order.orderId);
-  payload.event = 'confirmation';
-  socket.emit('confirmation', payload);
+  //This is a duplicate. 
+  // payload.event = 'confirmation';
+  // socket.emit('confirmation', payload);
   payload.event = 'pickup';
   socket.emit('pickup', payload);
 };

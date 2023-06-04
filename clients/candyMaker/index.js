@@ -17,7 +17,7 @@ socket.on('customerOrder', (payload) => {
 }); 
   
 
-socket.on('delivered', (payload) => {
+socket.on('confirmation', (payload) => {
   setTimeout(() => {
 
     thankCustomer(payload);

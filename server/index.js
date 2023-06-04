@@ -86,6 +86,7 @@ candy.on('connection', (socket) => {
 
   
   socket.on('in-transit', (payload) => {
+
     socket.broadcast.emit('in-transit', payload);
   });
 
