@@ -55,20 +55,20 @@ candy.on('connection', (socket) => {
   });
   //customer is not sending confirmation from getAll grab BUT is thanking driver....
   //listening for confirmation sent from orderhandler to trigger order confirmation from VENDOR
-  socket.on('confirmation', (payload) => {
+  // socket.on('confirmation', (payload) => {
 
-    let customerQueue = candyQueue.read('customer');
-    if(!customerQueue){
-      let customerKey = candyQueue.store('customer', new Queue());
-      customerQueue = candyQueue.read(customerKey);
-    }
-    console.log('customer queue adding event ' , payload.event);
-    customerQueue.store(payload.messageId, payload);
+  //   let customerQueue = candyQueue.read('customer');
+  //   if(!customerQueue){
+  //     let customerKey = candyQueue.store('customer', new Queue());
+  //     customerQueue = candyQueue.read(customerKey);
+  //   }
+  //   console.log('customer queue adding event ' , payload.event);
+  //   customerQueue.store(payload.messageId, payload);
 
 
     
-    socket.broadcast.emit('confirmation', payload);
-  });
+  //   socket.broadcast.emit('confirmation', payload);
+  // });
 
   // listens for and relays pickup event
   socket.on('pickup', (payload) => {
@@ -89,8 +89,8 @@ candy.on('connection', (socket) => {
     socket.broadcast.emit('in-transit', payload);
   });
 
-  //DELIVERED SOCKET EVENTS
-  socket.on('delivered', (payload) => {
+  //CONFIRMATION SOCKET EVENTS
+  socket.on('confirmation', (payload) => {
     let customerQueue = candyQueue.read('customer');
     if(!customerQueue){
       let customerKey = candyQueue.store('customer', new Queue());
@@ -107,7 +107,7 @@ candy.on('connection', (socket) => {
     //console.log(payload.queueId, 'vendor queue adding event ' , payload.event);
     vendorQueue.store(payload.messageId, payload);
 
-    socket.broadcast.emit('delivered', payload);
+    socket.broadcast.emit('confirmation', payload);
   });
 
   socket.on('getAll', (payload) => {
