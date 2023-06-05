@@ -2,7 +2,7 @@
 
 let Chance = require('chance');
 let chance = new Chance();
-const store = 'Eva\'s Sugar & Reece\'s Pieces';
+const store = 'Eva\'s Sweet\'s & Reece\'s Pieces';
 let orderId = 1;
 const orderCreator = (socket, order = null) => {
   if (!order) {

@@ -20,8 +20,8 @@ candy.on('connection', (socket) => {
 
   //logger
   socket.onAny((event, payload) => {
-    //let timestamp = new Date();
-    // console.log('ORDER: ', { event, timestamp, payload });
+    let timestamp = new Date();
+    console.log('ORDER: ', { event, timestamp, payload });
   });
 
   //CUSTOMER ORDER SOCKET EVENTS

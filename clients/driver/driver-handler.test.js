@@ -1,9 +1,10 @@
 'use strict';
 
-let socket = require('../socket-client-for-tests-only');
+let socket = require('../socket-client.js');
+const { io } = require('socket.io-client');
 const { pickupOccurred, packageDelivered } = require('./handler');
 
-jest.mock('../socket-client-for-tests-only.js', () => {
+jest.mock('../socket-client.js', () => {
   return {
     on: jest.fn(),
     emit: jest.fn(),
@@ -38,8 +39,8 @@ describe('Testing driver handlers', () => {
     };
     packageDelivered(payload, socket);
 
-    expect(socket.emit).toHaveBeenCalledWith('delivered', payload);
-    expect(consoleSpy).toHaveBeenCalledWith('DRIVER: delivered', payload.order.orderId);
+    expect(socket.emit).toHaveBeenCalledWith('confirmation', {...payload, event: 'confirmation'});
+    expect(consoleSpy).toHaveBeenCalledWith('DRIVER: delivery confirmation', payload.order.orderId);
   });
 
 

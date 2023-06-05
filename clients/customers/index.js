@@ -21,7 +21,7 @@ setInterval(() => {
 socket.on('confirmation', (payload) => {
   socket.emit('received', payload);
   console.log(`CUSTOMER: Thanks for confirming my order: ${payload.order.orderId}`);
-  console.log(`CUSTOMER: Thanks driver! I got my order: ${payload.order.orderId}.`);
+  // console.log(`CUSTOMER: Thanks driver! I got my order: ${payload.order.orderId}.`);
 });
 
 

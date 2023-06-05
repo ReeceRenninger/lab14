@@ -1,10 +1,11 @@
 'use strict';
 
-let socket = require('../socket-client-for-tests-only');
 
-const { orderHandler, thankDriver } = require('./handler');
 
-jest.mock('../socket-client-for-tests-only.js', () => {
+const { confirmOrder, thankCustomer } = require('./handler');
+// const store = 'Eva\'s Sweet\'s & Reece\'s Pieces';
+
+jest.mock('../socket-client', () => {
   return {
     on: jest.fn(),
     emit: jest.fn(),
@@ -23,33 +24,30 @@ afterAll(() => {
 
 describe('Vendor handlers', () => {
 
-  test('Should log correct emit and console log for orderHandler', () => {
-    let order = {
-      orderId: 12345,
-    };
-    let payload = {
-      event: 'pickup',
-      messageId: order.orderId,
-      queueId: 'Eva\'s Sugar & Reece\'s Pieces',
-      order,
-    };
-
-    orderHandler(socket, order);
-
-    expect(consoleSpy).toHaveBeenCalledWith('VENDOR: ORDER ready for pickup:', payload);
-    expect(socket.emit).toHaveBeenCalledWith('pickup', payload);
-  });
-
-  test('Should log correct emit and console log for thankDriver', () => {
-    let payload = {
-      order: {
-        customer: 'Test Test',
+  test('Should log correct emit and console log for confirmOrder', () => {
+    let payload ={
+      order : {
+        orderId: 12345,
       },
     };
 
-    thankDriver(payload);
+    console.log('payload', payload);
+    confirmOrder(payload);
 
-    expect(consoleSpy).toHaveBeenCalledWith('VENDOR: Thank you for your order', payload.order.customer);
+    expect(consoleSpy).toHaveBeenCalledWith('VENDOR: We have received your order:', payload.order.orderId);
+
+  });
+
+  test('Should log correct emit and console log for thankCustomer', () => {
+    let payload = {
+      order: {
+        customer: 'Harry Potter',
+      },
+    };
+
+    thankCustomer(payload);
+
+    expect(consoleSpy).toHaveBeenCalledWith('VENDOR: Thank you for your candy order', payload.order.orderId);
   });
 
 });

@@ -7,9 +7,6 @@ const socket = io('http://localhost:3001/candy');
 
 const confirmOrder = (payload) => {
   console.log('VENDOR: We have received your order:', payload.order.orderId);
-  //This is a duplicate. 
-  // payload.event = 'confirmation';
-  // socket.emit('confirmation', payload);
   payload.event = 'pickup';
   socket.emit('pickup', payload);
 };
@@ -20,4 +17,4 @@ const thankCustomer = (payload) => {
   socket.emit('received', payload);
 };
 
-module.exports = { thankCustomer, confirmOrder };
+module.exports = { confirmOrder, thankCustomer };
