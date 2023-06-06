@@ -10,8 +10,8 @@ Utilizing a socket server to create a delivery service that allows a customer to
 
 Stretch Goals:
 
-- Implement a standard queue
-- allow users to send "tips/thank you notes" to driver after order is received (deleted from queue).
+- [x]Implement a standard queue
+- [ ] allow users to send "thank you notes" to driver after order is received (deleted from queue).
 
 ### Links and Resources
 
@@ -31,14 +31,19 @@ env = < port of your choice >
 
 #### How to initialize/run your application (where applicable)
 
-- node index.js in each individual folder to start either the user/vendor/server
+- lab14/ `nodemon`
+- /customers `node index.js`
+- /candyMaker `node index.js`
+- /driver `node index.js`
 
-#### How to use your library (where applicable)
+
+
+<!-- #### How to use your library (where applicable)
 
 #### Features / Routes
 
 - Feature One: Details of feature
-- GET : `/hello` - specific route to hit
+- GET : `/hello` - specific route to hit -->
 
 #### Tests
 
