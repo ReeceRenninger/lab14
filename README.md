@@ -10,7 +10,7 @@ Utilizing a socket server to create a delivery service that allows a customer to
 
 Stretch Goals:
 
-- [x]Implement a standard queue
+- [x] Implement a standard queue
 - [ ] allow users to send "thank you notes" to driver after order is received (deleted from queue).
 
 ### Links and Resources
